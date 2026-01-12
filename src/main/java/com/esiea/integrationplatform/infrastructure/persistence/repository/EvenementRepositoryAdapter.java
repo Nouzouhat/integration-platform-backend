@@ -52,4 +52,5 @@ public class EvenementRepositoryAdapter implements EvenementRepositoryPort {
     public boolean existsById(Long id) {
         return jpaRepository.existsById(id);
     }
+
 }

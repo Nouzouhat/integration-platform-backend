@@ -11,6 +11,9 @@ import com.esiea.integrationplatform.usecase.TraiterEvenementCreeUseCaseImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.esiea.integrationplatform.domain.port.in.*;
+import com.esiea.integrationplatform.usecase.*;
+
 @Configuration
 public class UseCaseConfig {
 
@@ -31,4 +34,39 @@ public class UseCaseConfig {
     public TraiterEvenementCreeUseCase traiterEvenementCreeUseCase() {
         return new TraiterEvenementCreeUseCaseImpl();
     }
+
+
+    @Bean
+    public ObtenirEvenementUseCase obtenirEvenementUseCase(EvenementRepositoryPort evenementRepository) {
+        return new ObtenirEvenementUseCaseImpl(evenementRepository);
+    }
+
+    @Bean
+    public ModifierEvenementUseCase modifierEvenementUseCase(EvenementRepositoryPort evenementRepository) {
+        return new ModifierEvenementUseCaseImpl(evenementRepository);
+    }
+
+    @Bean
+    public SupprimerEvenementUseCase supprimerEvenementUseCase(EvenementRepositoryPort evenementRepository) {
+        return new SupprimerEvenementUseCaseImpl(evenementRepository);
+    }
+
+    @Bean
+    public PublierEvenementUseCase publierEvenementUseCase(
+            EvenementRepositoryPort evenementRepository,
+            EventPublisherPort eventPublisher) {
+        return new PublierEvenementUseCaseImpl(evenementRepository, eventPublisher);
+    }
+
+    @Bean
+    public DepublierEvenementUseCase depublierEvenementUseCase(EvenementRepositoryPort evenementRepository) {
+        return new DepublierEvenementUseCaseImpl(evenementRepository);
+    }
+
+    @Bean
+    public ExporterEvenementsCSVUseCase exporterEvenementsCSVUseCase(EvenementRepositoryPort evenementRepository) {
+        return new ExporterEvenementsCSVUseCaseImpl(evenementRepository);
+    }
+
+
 }

@@ -42,4 +42,5 @@ public interface EvenementRepositoryPort {
      * @return true si l'événement existe, false sinon
      */
     boolean existsById(Long id);
+
 }
