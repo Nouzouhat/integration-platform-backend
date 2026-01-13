@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Service Zookeeper (requis par Kafka)
   zookeeper:
@@ -42,6 +40,10 @@ services:
       - kafka
     ports:
       - "8080:8080"
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+      - 1.1.1.1
     environment:
       # Configuration Kafka pour Docker
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092

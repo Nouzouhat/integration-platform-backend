@@ -2,6 +2,7 @@ package com.esiea.integrationplatform.adapters.rest;
 
 import com.esiea.integrationplatform.adapters.rest.dto.InscriptionRequestDTO;
 import com.esiea.integrationplatform.adapters.rest.dto.ModifierInscriptionRequestDTO;
+import com.esiea.integrationplatform.config.TestSecurityConfig;
 import com.esiea.integrationplatform.domain.model.Evenement;
 import com.esiea.integrationplatform.infrastructure.persistence.repository.JpaEvenementRepository;
 import com.esiea.integrationplatform.infrastructure.persistence.repository.JpaInscriptionRepository;
@@ -12,7 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@Import(TestSecurityConfig.class)
+@ActiveProfiles("test")
 @DisplayName("Tests d'intégration - InscriptionController")
 class InscriptionControllerIntegrationTest {
 
