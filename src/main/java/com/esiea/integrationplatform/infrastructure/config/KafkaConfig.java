@@ -15,10 +15,19 @@ import org.springframework.kafka.config.TopicBuilder;
 public class KafkaConfig {
 
     public static final String TOPIC_EVENEMENT_CREE = "evenement-cree";
+    public static final String TOPIC_INSCRIPTION_CREEE = "inscription-creee";
 
     @Bean
     public NewTopic evenementCreeTopic() {
         return TopicBuilder.name(TOPIC_EVENEMENT_CREE)
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic inscriptionCreeeTopic() {
+        return TopicBuilder.name(TOPIC_INSCRIPTION_CREEE)
                 .partitions(1)
                 .replicas(1)
                 .build();

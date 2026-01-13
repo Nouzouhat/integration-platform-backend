@@ -5,6 +5,7 @@ import com.esiea.integrationplatform.domain.model.Evenement;
 import com.esiea.integrationplatform.domain.model.Inscription;
 import com.esiea.integrationplatform.domain.port.in.InscrireEtudiantUseCase;
 import com.esiea.integrationplatform.domain.port.out.EvenementRepositoryPort;
+import com.esiea.integrationplatform.domain.port.out.EventPublisherPort;
 import com.esiea.integrationplatform.domain.port.out.InscriptionRepositoryPort;
 import com.esiea.integrationplatform.domain.service.InscriptionValidator;
 
@@ -18,13 +19,16 @@ public class InscrireEtudiantUseCaseImpl implements InscrireEtudiantUseCase {
 
     private final InscriptionRepositoryPort inscriptionRepository;
     private final EvenementRepositoryPort evenementRepository;
+    private final EventPublisherPort eventPublisher;
     private final InscriptionValidator validator;
 
     public InscrireEtudiantUseCaseImpl(
             InscriptionRepositoryPort inscriptionRepository,
-            EvenementRepositoryPort evenementRepository) {
+            EvenementRepositoryPort evenementRepository,
+            EventPublisherPort eventPublisher) {
         this.inscriptionRepository = inscriptionRepository;
         this.evenementRepository = evenementRepository;
+        this.eventPublisher = eventPublisher;
         this.validator = new InscriptionValidator();
     }
 
@@ -56,7 +60,17 @@ public class InscrireEtudiantUseCaseImpl implements InscrireEtudiantUseCase {
         validator.validate(inscription);
 
         // 6. Sauvegarder
-        return inscriptionRepository.save(inscription);
+        Inscription inscriptionSauvegardee = inscriptionRepository.save(inscription);
+
+        // 7. Publier l'événement Kafka
+        eventPublisher.publishInscriptionCreee(
+                inscriptionSauvegardee.getId(),
+                inscriptionSauvegardee.getEtudiantId(),
+                inscriptionSauvegardee.getEvenementId(),
+                inscriptionSauvegardee.getStatut()
+        );
+
+        return inscriptionSauvegardee;
     }
 
     /**

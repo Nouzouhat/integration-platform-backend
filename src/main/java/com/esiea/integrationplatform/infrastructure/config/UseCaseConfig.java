@@ -69,8 +69,9 @@ public class UseCaseConfig {
     @Bean
     public InscrireEtudiantUseCase inscrireEtudiantUseCase(
             InscriptionRepositoryPort inscriptionRepository,
-            EvenementRepositoryPort evenementRepository) {
-        return new InscrireEtudiantUseCaseImpl(inscriptionRepository, evenementRepository);
+            EvenementRepositoryPort evenementRepository,
+            EventPublisherPort eventPublisher) {
+        return new InscrireEtudiantUseCaseImpl(inscriptionRepository, evenementRepository, eventPublisher);
     }
 
     @Bean
@@ -121,6 +122,11 @@ public class UseCaseConfig {
     @Bean
     public ModifierProfilUseCase modifierProfilUseCase(UserRepositoryPort userRepository) {
         return new ModifierProfilUseCaseImpl(userRepository);
+    }
+
+    @Bean
+    public SupprimerUserUseCase supprimerUserUseCase(UserRepositoryPort userRepository) {
+        return new SupprimerUserUseCaseImpl(userRepository);
     }
 
 }

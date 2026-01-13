@@ -47,4 +47,30 @@ public class KafkaEventPublisher implements EventPublisherPort {
             log.error("Erreur lors de la sérialisation de l'événement", e);
         }
     }
+
+    @Override
+    public void publishInscriptionCreee(Long inscriptionId, Long etudiantId, Long evenementId, String statut) {
+        try {
+            String message = statut.equals("CONFIRMEE")
+                    ? "Inscription confirmée pour l'événement ID " + evenementId
+                    : "Inscription en liste d'attente pour l'événement ID " + evenementId;
+
+            InscriptionCreeEvent event = new InscriptionCreeEvent(
+                    inscriptionId,
+                    etudiantId,
+                    evenementId,
+                    statut,
+                    message
+            );
+
+            String eventJson = objectMapper.writeValueAsString(event);
+
+            kafkaTemplate.send(KafkaConfig.TOPIC_INSCRIPTION_CREEE, eventJson);
+
+            log.info("Événement Kafka publié : {}", event);
+
+        } catch (JsonProcessingException e) {
+            log.error("Erreur lors de la sérialisation de l'événement d'inscription", e);
+        }
+    }
 }

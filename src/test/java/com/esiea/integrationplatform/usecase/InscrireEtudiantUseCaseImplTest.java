@@ -4,6 +4,7 @@ import com.esiea.integrationplatform.domain.exception.EvenementNotFoundException
 import com.esiea.integrationplatform.domain.model.Evenement;
 import com.esiea.integrationplatform.domain.model.Inscription;
 import com.esiea.integrationplatform.domain.port.out.EvenementRepositoryPort;
+import com.esiea.integrationplatform.domain.port.out.EventPublisherPort;
 import com.esiea.integrationplatform.domain.port.out.InscriptionRepositoryPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,11 +31,14 @@ class InscrireEtudiantUseCaseImplTest {
     @Mock
     private EvenementRepositoryPort evenementRepository;
 
+    @Mock
+    private EventPublisherPort eventPublisher;
+
     private InscrireEtudiantUseCaseImpl useCase;
 
     @BeforeEach
     void setUp() {
-        useCase = new InscrireEtudiantUseCaseImpl(inscriptionRepository, evenementRepository);
+        useCase = new InscrireEtudiantUseCaseImpl(inscriptionRepository, evenementRepository, eventPublisher);
     }
 
     @Test
