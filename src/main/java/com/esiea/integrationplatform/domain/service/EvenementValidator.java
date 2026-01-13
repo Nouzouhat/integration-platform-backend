@@ -40,9 +40,17 @@ public class EvenementValidator {
             throw new IllegalArgumentException("La date de début est obligatoire");
         }
 
-        if (evenement.getDateFin() != null &&
-                evenement.getDateFin().isBefore(evenement.getDateDebut())) {
+        if (evenement.getDateFin() == null) {
+            throw new IllegalArgumentException("La date de fin est obligatoire");
+        }
+
+        if (evenement.getDateFin().isBefore(evenement.getDateDebut())) {
             throw new IllegalArgumentException("La date de fin doit être postérieure à la date de début");
+        }
+
+        // Validation du lieu
+        if (evenement.getLieu() == null || evenement.getLieu().trim().isEmpty()) {
+            throw new IllegalArgumentException("Le lieu est obligatoire");
         }
 
         // Validation du statut

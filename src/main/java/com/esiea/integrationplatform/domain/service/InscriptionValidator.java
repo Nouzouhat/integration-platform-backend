@@ -32,15 +32,17 @@ public class InscriptionValidator {
         }
 
         // Validation du statut
-        if (inscription.getStatut() != null) {
-            String statut = inscription.getStatut().toUpperCase();
-            if (!statut.equals("EN_ATTENTE") &&
-                    !statut.equals("CONFIRMEE") &&
-                    !statut.equals("ANNULEE")) {
-                throw new IllegalArgumentException(
-                        "Le statut doit être : EN_ATTENTE, CONFIRMEE ou ANNULEE"
-                );
-            }
+        if (inscription.getStatut() == null || inscription.getStatut().trim().isEmpty()) {
+            throw new IllegalArgumentException("Le statut est obligatoire");
+        }
+
+        String statut = inscription.getStatut().toUpperCase();
+        if (!statut.equals("EN_ATTENTE") &&
+                !statut.equals("CONFIRMEE") &&
+                !statut.equals("ANNULEE")) {
+            throw new IllegalArgumentException(
+                    "Le statut doit être : EN_ATTENTE, CONFIRMEE ou ANNULEE"
+            );
         }
 
         // Validation de la date d'inscription

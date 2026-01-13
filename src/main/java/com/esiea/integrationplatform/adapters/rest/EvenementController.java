@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * Contrôleur REST pour les événements
  */
 @RestController
-@RequestMapping("/api/evenements")
+@RequestMapping("/evenements")
 @Tag(name = "Événements", description = "API de gestion des événements de la semaine d'intégration")
 public class EvenementController {
 
