@@ -16,11 +16,14 @@ public class CreerCompteUseCaseImpl implements CreerCompteUseCase {
 
     private final UserRepositoryPort userRepository;
     private final PasswordEncoderPort passwordEncoder;
+    private final com.esiea.integrationplatform.domain.port.out.EventPublisherPort eventPublisher;
 
     public CreerCompteUseCaseImpl(UserRepositoryPort userRepository, 
-                                  PasswordEncoderPort passwordEncoder) {
+                                  PasswordEncoderPort passwordEncoder,
+                                  com.esiea.integrationplatform.domain.port.out.EventPublisherPort eventPublisher) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -60,6 +63,15 @@ public class CreerCompteUseCaseImpl implements CreerCompteUseCase {
         }
 
         // 5. Sauvegarder
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        
+        // 6. Publier événement Kafka
+        eventPublisher.publishUserAction(
+            savedUser.getId(),
+            "CREATION",
+            String.format("Nouvel utilisateur créé : %s (%s)", savedUser.getNomComplet(), savedUser.getEmail())
+        );
+        
+        return savedUser;
     }
 }

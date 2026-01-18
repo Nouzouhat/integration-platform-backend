@@ -73,4 +73,51 @@ public class KafkaEventPublisher implements EventPublisherPort {
             log.error("Erreur lors de la sérialisation de l'événement d'inscription", e);
         }
     }
+
+    @Override
+    public void publishUserAction(Long userId, String action, String details) {
+        try {
+            UserActionEvent event = new UserActionEvent(
+                    userId,
+                    action,
+                    details,
+                    java.time.LocalDateTime.now()
+            );
+
+            String eventJson = objectMapper.writeValueAsString(event);
+
+            kafkaTemplate.send(KafkaConfig.TOPIC_USER_ACTION, eventJson);
+
+            log.info("Événement Kafka publié : {}", event);
+
+        } catch (JsonProcessingException e) {
+            log.error("Erreur lors de la sérialisation de l'événement d'action utilisateur", e);
+        }
+    }
+
+    @Override
+    public void publishEventStatusChange(Long evenementId, String ancienStatut, String nouveauStatut, String titre) {
+        try {
+            String message = String.format("Le statut de l'événement '%s' est passé de '%s' à '%s'",
+                    titre, ancienStatut, nouveauStatut);
+
+            EventStatusChangeEvent event = new EventStatusChangeEvent(
+                    evenementId,
+                    titre,
+                    ancienStatut,
+                    nouveauStatut,
+                    message,
+                    java.time.LocalDateTime.now()
+            );
+
+            String eventJson = objectMapper.writeValueAsString(event);
+
+            kafkaTemplate.send(KafkaConfig.TOPIC_EVENT_STATUS_CHANGE, eventJson);
+
+            log.info("Événement Kafka publié : {}", event);
+
+        } catch (JsonProcessingException e) {
+            log.error("Erreur lors de la sérialisation de l'événement de changement de statut", e);
+        }
+    }
 }

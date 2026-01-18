@@ -16,6 +16,9 @@ public class KafkaConfig {
 
     public static final String TOPIC_EVENEMENT_CREE = "evenement-cree";
     public static final String TOPIC_INSCRIPTION_CREEE = "inscription-creee";
+    public static final String TOPIC_USER_ACTION = "user-action";
+    public static final String TOPIC_EVENT_STATUS_CHANGE = "event-status-change";
+
 
     @Bean
     public NewTopic evenementCreeTopic() {
@@ -28,6 +31,22 @@ public class KafkaConfig {
     @Bean
     public NewTopic inscriptionCreeeTopic() {
         return TopicBuilder.name(TOPIC_INSCRIPTION_CREEE)
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic userActionTopic() {
+        return TopicBuilder.name(TOPIC_USER_ACTION)
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic eventStatusChangeTopic() {
+        return TopicBuilder.name(TOPIC_EVENT_STATUS_CHANGE)
                 .partitions(1)
                 .replicas(1)
                 .build();

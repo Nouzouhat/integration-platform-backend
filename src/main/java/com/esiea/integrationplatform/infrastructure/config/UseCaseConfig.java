@@ -103,8 +103,9 @@ public class UseCaseConfig {
     @Bean
     public CreerCompteUseCase creerCompteUseCase(
             UserRepositoryPort userRepository,
-            PasswordEncoderPort passwordEncoder) {
-        return new CreerCompteUseCaseImpl(userRepository, passwordEncoder);
+            PasswordEncoderPort passwordEncoder,
+            EventPublisherPort eventPublisher) {
+        return new CreerCompteUseCaseImpl(userRepository, passwordEncoder, eventPublisher);
     }
 
     @Bean
@@ -127,6 +128,27 @@ public class UseCaseConfig {
     @Bean
     public SupprimerUserUseCase supprimerUserUseCase(UserRepositoryPort userRepository) {
         return new SupprimerUserUseCaseImpl(userRepository);
+    }
+
+    // ========== Use Cases Notification ==========
+
+    @Bean
+    public CreerNotificationUseCase creerNotificationUseCase(
+            com.esiea.integrationplatform.domain.port.out.NotificationRepositoryPort notificationRepository,
+            EventPublisherPort eventPublisher) {
+        return new CreerNotificationUseCaseImpl(notificationRepository, eventPublisher);
+    }
+
+    @Bean
+    public ObtenirNotificationsUseCase obtenirNotificationsUseCase(
+            com.esiea.integrationplatform.domain.port.out.NotificationRepositoryPort notificationRepository) {
+        return new ObtenirNotificationsUseCaseImpl(notificationRepository);
+    }
+
+    @Bean
+    public MarquerNotificationLueUseCase marquerNotificationLueUseCase(
+            com.esiea.integrationplatform.domain.port.out.NotificationRepositoryPort notificationRepository) {
+        return new MarquerNotificationLueUseCaseImpl(notificationRepository);
     }
 
 }

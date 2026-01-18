@@ -106,7 +106,7 @@ public class EvenementController {
     /**
      * Exporter les événements en CSV
      */
-    @GetMapping("/e")
+    @GetMapping("/export")
     @Operation(summary = "Exporter les événements en CSV",
             description = "Génère et télécharge un fichier CSV contenant tous les événements")
     @ApiResponses(value = {
